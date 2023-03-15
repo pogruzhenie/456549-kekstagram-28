@@ -30,11 +30,13 @@ function getNumbers(string){
 function addSymbols(string, lengthMin, stringAdd){
   const lenghtString = string.length;
   const lengthStringAdd = stringAdd.length;
+  const lengthAdd = lengthMin - lenghtString;
+  const iterations = lengthAdd / lengthStringAdd;
+  const lenghtSlice = lengthAdd % lengthStringAdd;
+  let stringAddNew = '';
+  let stringSliced = '';
+
   if(lenghtString < lengthMin){
-    const lengthAdd = lengthMin - lenghtString;
-    let stringSliced = '';
-    const iterations = lengthAdd / lengthStringAdd;
-    let stringAddNew = '';
     if (Math.trunc(iterations) > 0){
       for(let i = 0; i < Math.trunc(iterations); i++){
         stringAddNew = stringAddNew + stringAdd;
@@ -42,7 +44,6 @@ function addSymbols(string, lengthMin, stringAdd){
       stringAdd = stringAddNew;
     }
     if(Number.isInteger(iterations) === false){
-      const lenghtSlice = lengthAdd % lengthStringAdd;
       stringSliced = stringAdd.slice(0, lenghtSlice);
     }
     string = stringSliced + stringAddNew + string;
@@ -50,4 +51,4 @@ function addSymbols(string, lengthMin, stringAdd){
 
   return string;
 }
-addSymbols('0', 8, 'st');
+
