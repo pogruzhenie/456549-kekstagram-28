@@ -1,4 +1,4 @@
-const checkStringLenght = (string, maxLength) => string.length <= maxLength;
+const checkStringLength = (string, maxLength) => string.length <= maxLength;
 
 const isPalindrome = (string) => {
   string = string.replaceAll(' ', '');
