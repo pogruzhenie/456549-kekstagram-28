@@ -1,13 +1,14 @@
 const checkStringLength = (string, maxLength) => string.length <= maxLength;
 
 const isPalindrome = (string) => {
-  string = string.replaceAll(' ', '');
-  string = string.toLowerCase();
+  const stringEdited = string
+    .replaceAll(' ', '')
+    .toLowerCase();
   let stringReversed = '';
-  for(let i = string.length - 1; i >= 0; i--){
-    stringReversed = stringReversed + string[i];
+  for(let i = stringEdited.length - 1; i >= 0; i--){
+    stringReversed += stringEdited.at(i);
   }
-  return string === stringReversed;
+  return stringEdited === stringReversed;
 };
 
 const getNumbers = (string) => {
@@ -17,7 +18,7 @@ const getNumbers = (string) => {
     let stringNew = '';
     for(let i = 0; i < string.length; i++){
       if (Number.isInteger(Number(string[i]))){
-        stringNew = stringNew + String(Number(string[i]));
+        stringNew += String(Number(string[i]));
       }
     }
     string = (stringNew !== '') ? stringNew : string;
@@ -26,6 +27,7 @@ const getNumbers = (string) => {
 };
 
 const addSymbols = (string, lengthMin, stringAdd) => {
+
   const lenghtString = string.length;
   const lengthStringAdd = stringAdd.length;
   const lengthAdd = lengthMin - lenghtString;
@@ -37,7 +39,7 @@ const addSymbols = (string, lengthMin, stringAdd) => {
   if(lenghtString < lengthMin){
     if (Math.trunc(iterations) > 0){
       for(let i = 0; i < Math.trunc(iterations); i++){
-        stringAddNew = stringAddNew + stringAdd;
+        stringAddNew += stringAdd;
       }
       stringAdd = stringAddNew;
     }
