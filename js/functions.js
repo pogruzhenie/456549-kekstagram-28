@@ -1,5 +1,7 @@
+// eslint-disable-next-line no-unused-vars
 const checkStringLength = (string, maxLength) => string.length <= maxLength;
 
+// eslint-disable-next-line no-unused-vars
 const isPalindrome = (string) => {
   const stringEdited = string
     .replaceAll(' ', '')
@@ -11,6 +13,7 @@ const isPalindrome = (string) => {
   return stringEdited === stringReversed;
 };
 
+// eslint-disable-next-line no-unused-vars
 const getNumbers = (string) => {
   if(Number.isInteger(string) === false || string < 0){
     string = String(string);
@@ -26,6 +29,7 @@ const getNumbers = (string) => {
   return Number(string);
 };
 
+// eslint-disable-next-line no-unused-vars
 const addSymbols = (string, lengthMin, stringAdd) => {
 
   const lenghtString = string.length;
