@@ -2,7 +2,7 @@
 const checkStringLength = (string, maxLength) => string.length <= maxLength;
 
 // eslint-disable-next-line no-unused-vars
-function isPalindrome(string) {
+const isPalindrome = (string) => {
   const stringEdited = string
     .replaceAll(' ', '')
     .toLowerCase();
@@ -11,7 +11,7 @@ function isPalindrome(string) {
     stringReversed += stringEdited.at(i);
   }
   return stringEdited === stringReversed;
-}
+};
 
 // eslint-disable-next-line no-unused-vars
 const getNumbers = (string) => {
