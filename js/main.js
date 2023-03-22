@@ -9,12 +9,14 @@ description - придумать самому
 likes - случайное число от 15 до 200.
 
 */
-const MESSAGES = ['Всё отлично!',
+const MESSAGES = [
+  'Всё отлично!',
   'В целом всё неплохо. Но не всё.',
   'Когда вы делаете фотографию, хорошо бы убирать палец из кадра. В конце концов это просто непрофессионально.',
   'Моя бабушка случайно чихнула с фотоаппаратом в руках и у неё получилась фотография лучше.',
   'Я поскользнулся на банановой кожуре и уронил фотоаппарат на кота и у меня получилась фотография лучше.',
-  'Лица у людей на фотке перекошены, как будто их избивают. Как можно было поймать такой неудачный момент?!'];
+  'Лица у людей на фотке перекошены, как будто их избивают. Как можно было поймать такой неудачный момент?!'
+];
 
 const NAMES = [
   'Артём',
@@ -42,6 +44,12 @@ const LAST_NAMES = [
   'Петров',
   'Волков'
 ];
+const COMMENTS_MAX_COUNT = 6;
+const PHOTOS_MAX_COUNT = 25;
+
+let commentId = 0;
+
+console.log (commentId);
 
 const getRandomInteger = (min, max) => {
   const lower = Math.ceil(Math.min(Math.abs(min), Math.abs(max)));
@@ -51,32 +59,39 @@ const getRandomInteger = (min, max) => {
   return Math.floor(result);
 };
 
-const getRandomArrayElement = (array) => {
-  retun array[getRandomInteger(0, NAMES.length - 1)]
+const getRandomArrayElement = (elements) => {
+  return elements[getRandomInteger(0, elements.length - 1)];
+
 };
 
 const generateComment = () => {
-  const randomName = NAMES[getRandomInteger(0, NAMES.length - 1)];
-  const randomLastName = LAST_NAMES[getRandomInteger(0, LAST_NAMES.length - 1)];
-  const commentAutor = randomName + ' ' + randomLastName;
+  console.log(commentId);
+  commentId++;
+  console.log(commentId);
   return {
-    'name': commentAutor
+    'id': commentId,
+    'avatar': 'img/avatar' + getRandomInteger(1, COMMENTS_MAX_COUNT) + '.svg',// желательно, чтоб в массиве не повторялись
+    'message': getRandomArrayElement(MESSAGES),
+    'name': getRandomArrayElement(NAMES) + ' ' + getRandomArrayElement(LAST_NAMES)
   }
 };
 
+const comments = Array.from({length: getRandomInteger(1, COMMENTS_MAX_COUNT)}, generateComment);
 console.log(generateComment());
 
-const generateObject = () => {
-  let photoId = '';
-  const photoUrl = 'photos/' + '' + '.jpg';
+const generatePhotoObject = () => {
+  let photoId = 0;
+  photoId++;
   return {
     'id': photoId,
-    'url': photoUrl,
+    'url': 'photos/' + photoId + '.jpg',
     'description': 'Пробная фотография',
     'likes': getRandomInteger(15, 200),
-    'comments': []
+    'comments': Array.from({length: getRandomInteger(1, COMMENTS_MAX_COUNT)}, generateComment)
   };
 };
 
-//console.log(generateObject());
+const photosArray = Array.from({length: 25}, generatePhotoObject);
 
+console.log(comments);
+console.log(photosArray);
