@@ -16,16 +16,32 @@ const MESSAGES = ['Всё отлично!',
   'Я поскользнулся на банановой кожуре и уронил фотоаппарат на кота и у меня получилась фотография лучше.',
   'Лица у людей на фотке перекошены, как будто их избивают. Как можно было поймать такой неудачный момент?!'];
 
-const NAMES = ['Артём',
-  'Кекс',
+const NAMES = [
+  'Артём',
+  'Валера',
   'Алексей',
-  'Марина',
+  'Олег',
   'Рахат',
-  'Варвара',
-  'Елена',
+  'Димон',
+  'Евгений',
   'Руслан',
   'Антон',
-  'Сергей'];
+  'Сергей'
+];
+
+const LAST_NAMES = [
+  'Смирнов',
+  'Иванов',
+  'Кузнецов',
+  'Соколов',
+  'Попов',
+  'Лебедев',
+  'Козлов',
+  'Новиков',
+  'Морозов',
+  'Петров',
+  'Волков'
+];
 
 const getRandomInteger = (min, max) => {
   const lower = Math.ceil(Math.min(Math.abs(min), Math.abs(max)));
@@ -35,34 +51,32 @@ const getRandomInteger = (min, max) => {
   return Math.floor(result);
 };
 
-const generateComments = (length) => {
-//количество комментариев к фотографии
-  let comments = [];
-  for (let i = 0; i <= length; i++){
-    comments[i] = {
-      'id': 135,//Замыкание!!!
-      'avatar': 'img/avatar-' + getRandomInteger(1, 6) + '.svg',
-      'message': MESSAGES[getRandomInteger(0, MESSAGES.length - 1)],
-      'name': 'Артём'
-    };
-  }
-  return comments;
+const getRandomArrayElement = (array) => {
+  retun array[getRandomInteger(0, NAMES.length - 1)]
 };
 
-const generateData = (length) => {
-  //console.log(length);
-  let dataTemp = [];
-  //console.log(dataTemp);
-  for(let i = 1; i <= length; i++) {
-    dataTemp[i] = {'id': i,
-      'url': 'photos/' + i + '.jpg',
-      'description': 'Пробная фотография',
-      'likes': getRandomInteger(15, 200),
-      'comments': generateComments(getRandomInteger(1, MESSAGES.length))
-    };
+const generateComment = () => {
+  const randomName = NAMES[getRandomInteger(0, NAMES.length - 1)];
+  const randomLastName = LAST_NAMES[getRandomInteger(0, LAST_NAMES.length - 1)];
+  const commentAutor = randomName + ' ' + randomLastName;
+  return {
+    'name': commentAutor
   }
-  return dataTemp;
 };
 
-console.log(generateData(25));
-console.log(MESSAGES);
+console.log(generateComment());
+
+const generateObject = () => {
+  let photoId = '';
+  const photoUrl = 'photos/' + '' + '.jpg';
+  return {
+    'id': photoId,
+    'url': photoUrl,
+    'description': 'Пробная фотография',
+    'likes': getRandomInteger(15, 200),
+    'comments': []
+  };
+};
+
+//console.log(generateObject());
+
