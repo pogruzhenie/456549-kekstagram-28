@@ -45,7 +45,10 @@ const LAST_NAMES = [
   'Волков'
 ];
 const COMMENTS_MAX_COUNT = 6;
+const AVATARS_COUNT = 6;
 const PHOTOS_MAX_COUNT = 25;
+const LIKES_MIN_VALUE = 15;
+const LIKES_MAX_VALUE = 200;
 
 let commentId = 0;
 
@@ -70,7 +73,7 @@ const generateComment = () => {
   console.log(commentId);
   return {
     'id': commentId,
-    'avatar': 'img/avatar' + getRandomInteger(1, COMMENTS_MAX_COUNT) + '.svg',// желательно, чтоб в массиве не повторялись
+    'avatar': 'img/avatar' + getRandomInteger(1, AVATARS_COUNT) + '.svg',// желательно, чтоб в массиве не повторялись
     'message': getRandomArrayElement(MESSAGES),
     'name': getRandomArrayElement(NAMES) + ' ' + getRandomArrayElement(LAST_NAMES)
   }
@@ -86,12 +89,12 @@ const generatePhotoObject = () => {
     'id': photoId,
     'url': 'photos/' + photoId + '.jpg',
     'description': 'Пробная фотография',
-    'likes': getRandomInteger(15, 200),
+    'likes': getRandomInteger(LIKES_MIN_VALUE, LIKES_MAX_VALUE),
     'comments': Array.from({length: getRandomInteger(1, COMMENTS_MAX_COUNT)}, generateComment)
   };
 };
 
-const photosArray = Array.from({length: 25}, generatePhotoObject);
+const photosArray = Array.from({length: PHOTOS_MAX_COUNT}, generatePhotoObject);
 
 console.log(comments);
 console.log(photosArray);
