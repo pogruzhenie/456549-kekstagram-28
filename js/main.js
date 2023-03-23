@@ -9,6 +9,13 @@ description - придумать самому
 likes - случайное число от 15 до 200.
 
 */
+
+const COMMENTS_MAX_COUNT = 6;
+const AVATARS_COUNT = 6;
+const PHOTOS_MAX_COUNT = 25;
+const LIKES_MIN_VALUE = 15;
+const LIKES_MAX_VALUE = 200;
+
 const MESSAGES = [
   'Всё отлично!',
   'В целом всё неплохо. Но не всё.',
@@ -44,15 +51,6 @@ const LAST_NAMES = [
   'Петров',
   'Волков'
 ];
-const COMMENTS_MAX_COUNT = 6;
-const AVATARS_COUNT = 6;
-const PHOTOS_MAX_COUNT = 25;
-const LIKES_MIN_VALUE = 15;
-const LIKES_MAX_VALUE = 200;
-
-let commentId = 0;
-
-console.log (commentId);
 
 const getRandomInteger = (min, max) => {
   const lower = Math.ceil(Math.min(Math.abs(min), Math.abs(max)));
@@ -62,29 +60,34 @@ const getRandomInteger = (min, max) => {
   return Math.floor(result);
 };
 
-const getRandomArrayElement = (elements) => {
-  return elements[getRandomInteger(0, elements.length - 1)];
+const getRandomArrayElement = (elements) => elements[getRandomInteger(0, elements.length - 1)];
 
+const createIdGenerator = () => {
+  let lastGeneratedId = 0;
+
+  return function () {
+    lastGeneratedId += 1;
+    return lastGeneratedId;
+  };
 };
 
+const generatePhotoId = createIdGenerator();
+const generateCommentId = createIdGenerator();
+
 const generateComment = () => {
-  console.log(commentId);
-  commentId++;
-  console.log(commentId);
+
   return {
-    'id': commentId,
+    'id': generateCommentId(),///фигачим генератор
     'avatar': 'img/avatar' + getRandomInteger(1, AVATARS_COUNT) + '.svg',// желательно, чтоб в массиве не повторялись
     'message': getRandomArrayElement(MESSAGES),
     'name': getRandomArrayElement(NAMES) + ' ' + getRandomArrayElement(LAST_NAMES)
-  }
+  };
 };
 
-const comments = Array.from({length: getRandomInteger(1, COMMENTS_MAX_COUNT)}, generateComment);
-console.log(generateComment());
+//const comments = Array.from({length: getRandomInteger(1, COMMENTS_MAX_COUNT)}, generateComment);
 
 const generatePhotoObject = () => {
-  let photoId = 0;
-  photoId++;
+  const photoId = generatePhotoId();
   return {
     'id': photoId,
     'url': 'photos/' + photoId + '.jpg',
@@ -96,5 +99,4 @@ const generatePhotoObject = () => {
 
 const photosArray = Array.from({length: PHOTOS_MAX_COUNT}, generatePhotoObject);
 
-console.log(comments);
 console.log(photosArray);
