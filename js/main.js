@@ -1,15 +1,3 @@
-/*
-
-создаём массив из объектов.
-Каждый объект состоит из:
-
-id - число от 1 до 25
-url - photos/{{i}}.jpg
-description - придумать самому
-likes - случайное число от 15 до 200.
-
-*/
-
 const COMMENTS_MAX_COUNT = 6;
 const AVATARS_COUNT = 6;
 const PHOTOS_MAX_COUNT = 25;
@@ -74,13 +62,12 @@ const createIdGenerator = () => {
 const generatePhotoId = createIdGenerator();
 const generateCommentId = createIdGenerator();
 
-function createRandomIdFromRangeGenerator (min, max) {
+function createRandomIdFromRangeGenerator(min, max) {
   const previousValues = [];
 
   return function () {
     let currentValue = getRandomInteger(min, max);
     if (previousValues.length >= (max - min + 1)) {
-      console.error('Перебраны все числа из диапазона от ' + min + ' до ' + max);
       return null;
     }
     while (previousValues.includes(currentValue)) {
@@ -91,29 +78,49 @@ function createRandomIdFromRangeGenerator (min, max) {
   };
 }
 
-const generateComment = () => {
-
-  return {
-    'id': generateCommentId(),///фигачим генератор
-    'avatar': 'img/avatar' + getRandomInteger(1, AVATARS_COUNT) + '.svg',// желательно, чтоб в массиве не повторялись
-    'message': getRandomArrayElement(MESSAGES),
-    'name': getRandomArrayElement(NAMES) + ' ' + getRandomArrayElement(LAST_NAMES)
+const createComment = (avatarCounter, commentMessageKey) => {
+  const comment = {
+    id: generateCommentId(),///фигачим генератор
+    avatar: `img/avatar-${avatarCounter}.svg`,// желательно, чтоб в массиве не повторялись
+    message: MESSAGES[commentMessageKey],
+    name: `${getRandomArrayElement(NAMES)} ${getRandomArrayElement(LAST_NAMES)}`
   };
+  return comment;
 };
 
-//const comments = Array.from({length: getRandomInteger(1, COMMENTS_MAX_COUNT)}, generateComment);
+
+const generateComments = () => {
+  const comments = [];
+  const avatarCounter = createRandomIdFromRangeGenerator(1, AVATARS_COUNT);
+  const commentMessageKey = createRandomIdFromRangeGenerator(0, MESSAGES.length - 1);
+  let commentsQuantityMax = COMMENTS_MAX_COUNT;
+
+  if (MESSAGES.length < COMMENTS_MAX_COUNT) {
+    commentsQuantityMax = MESSAGES.length;
+  }
+
+  const commentsQuantity = createRandomIdFromRangeGenerator(1, commentsQuantityMax);
+
+  for (let i = 0; i < commentsQuantity(); i++) {
+    comments.push(createComment(avatarCounter(), commentMessageKey()));
+  }
+
+  return comments;
+};
+
 
 const generatePhotoObject = () => {
   const photoId = generatePhotoId();
   return {
-    'id': photoId,
-    'url': 'photos/' + photoId + '.jpg',
-    'description': 'Пробная фотография',
-    'likes': getRandomInteger(LIKES_MIN_VALUE, LIKES_MAX_VALUE),
-    'comments': Array.from({length: getRandomInteger(1, COMMENTS_MAX_COUNT)}, generateComment)
+    id: photoId,
+    url: `photos/${photoId}.jpg`,
+    description: 'Пробная фотография',
+    likes: getRandomInteger(LIKES_MIN_VALUE, LIKES_MAX_VALUE),
+    comments: generateComments()
   };
 };
 
-const photosArray = Array.from({length: PHOTOS_MAX_COUNT}, generatePhotoObject);
+const photosArray = Array.from({ length: PHOTOS_MAX_COUNT }, generatePhotoObject);
 
 console.log(photosArray);
+
