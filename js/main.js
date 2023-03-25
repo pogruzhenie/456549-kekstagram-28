@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 const COMMENTS_MAX_COUNT = 6;
 const AVATARS_COUNT = 6;
 const PHOTOS_MAX_COUNT = 25;
@@ -96,7 +97,6 @@ const createComment = (avatarCounter, commentMessageKey) => {
   return comment;
 };
 
-
 const generateComments = () => {
   const comments = [];
   const avatarCounter = createRandomNumberFromRangeGenerator(1, AVATARS_COUNT);
@@ -117,7 +117,6 @@ const generateComments = () => {
   return comments;
 };
 
-
 const generatePhotoObject = () => {
   const photoId = generatePhotoId();
   const photoDescriptionKey = createRandomNumberFromRangeGenerator(0, PHOTO_DESRIPTIONS.length - 1);
@@ -131,7 +130,7 @@ const generatePhotoObject = () => {
   };
 };
 
-const photosArray = Array.from({ length: PHOTOS_MAX_COUNT }, generatePhotoObject);
-
-console.log(photosArray);
-
+//Ниже вызов функции, которая создаст массив из 25-ти объектов, описанных в задании:
+//
+//const photosArray = Array.from({ length: PHOTOS_MAX_COUNT }, generatePhotoObject);
+//
