@@ -71,7 +71,7 @@ const createIdGenerator = () => {
 const generatePhotoId = createIdGenerator();
 const generateCommentId = createIdGenerator();
 
-function createRandomNumberFromRangeGenerator(min, max) {
+function getUnicRandomInteger(min, max) {//Склеиваем с getRandomInteger, делают по сути то же самое
   const previousValues = [];
 
   return function () {
@@ -87,10 +87,10 @@ function createRandomNumberFromRangeGenerator(min, max) {
   };
 }
 
-const createComment = (avatarCounter, commentMessageKey) => {
+const createComment = (avatarNumber, commentMessageKey) => {
   const comment = {
     id: generateCommentId(),
-    avatar: `img/avatar-${avatarCounter}.svg`,
+    avatar: `img/avatar-${avatarNumber}.svg`,
     message: MESSAGES[commentMessageKey],
     name: `${getRandomArrayElement(NAMES)} ${getRandomArrayElement(LAST_NAMES)}`
   };
@@ -99,19 +99,18 @@ const createComment = (avatarCounter, commentMessageKey) => {
 
 const generateComments = () => {
   const comments = [];
-  const avatarCounter = createRandomNumberFromRangeGenerator(1, AVATARS_COUNT);
-  const commentMessageKey = createRandomNumberFromRangeGenerator(0, MESSAGES.length - 1);
+  const avatarNumber = getUnicRandomInteger(1, AVATARS_COUNT);
+  const commentMessageKey = getUnicRandomInteger(0, MESSAGES.length - 1);
   let commentsQuantityMax = COMMENTS_MAX_COUNT;
 
   if (MESSAGES.length < COMMENTS_MAX_COUNT) {
     commentsQuantityMax = MESSAGES.length;
   }
 
-  const commentsQuantity = createRandomNumberFromRangeGenerator(1, commentsQuantityMax);
+  const commentsQuantity = getUnicRandomInteger(1, commentsQuantityMax);
 
-  /*Через цикл, потому что хотелось, чтобы коменнтарии и аватарки авторов не повторялись для одной фотографии*/
   for (let i = 0; i < commentsQuantity(); i++) {
-    comments.push(createComment(avatarCounter(), commentMessageKey()));
+    comments.push(createComment(avatarNumber(), commentMessageKey()));
   }
 
   return comments;
@@ -119,7 +118,7 @@ const generateComments = () => {
 
 const generatePhotoObject = () => {
   const photoId = generatePhotoId();
-  const photoDescriptionKey = createRandomNumberFromRangeGenerator(0, PHOTO_DESRIPTIONS.length - 1);
+  const photoDescriptionKey = getUnicRandomInteger(0, PHOTO_DESRIPTIONS.length - 1);
 
   return {
     id: photoId,
@@ -130,7 +129,6 @@ const generatePhotoObject = () => {
   };
 };
 
-//Ниже вызов функции, которая создаст массив из 25-ти объектов, описанных в задании:
-//
-//const photosArray = Array.from({ length: PHOTOS_MAX_COUNT }, generatePhotoObject);
-//
+
+const photosArray = Array.from({ length: PHOTOS_MAX_COUNT }, generatePhotoObject);
+
