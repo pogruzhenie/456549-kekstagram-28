@@ -18,8 +18,8 @@ const MESSAGES = [
 const PHOTO_DESCRIPTIONS = [
   'Тестирую зеркалку',
   'Завалила немного горизонт',
-  'Снимаю на старую «Нокию»',
-  'Просто пофотографировал',
+  'Снято на старую «Нокию»',
+  'Рядом с моим домом',
   'В этом снимке заложен глубокий философский смысл, недоступный большинству посетителей',
 ];
 
@@ -84,17 +84,16 @@ const generateComments = () => {
 
 const generatePhotoObject = () => {
   const photoId = generatePhotoId();
-  const photoDescriptionKey = getUnicRandomInteger(0, PHOTO_DESCRIPTIONS.length - 1);
 
   return {
     id: photoId,
     url: `photos/${photoId}.jpg`,
-    description: PHOTO_DESCRIPTIONS[photoDescriptionKey()],
+    description: getRandomArrayElement(PHOTO_DESCRIPTIONS),
     likes: getRandomInteger(LIKES_MIN_VALUE, LIKES_MAX_VALUE),
     comments: generateComments()
   };
 };
 
-const generatePhotos = Array.from({ length: PHOTOS_MAX_COUNT }, generatePhotoObject);
+const generatePhotos = () => Array.from({ length: PHOTOS_MAX_COUNT }, generatePhotoObject);
 
-export {generatePhotos };
+export { generatePhotos };
