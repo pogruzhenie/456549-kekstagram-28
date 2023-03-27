@@ -15,7 +15,7 @@ const MESSAGES = [
   'Лица у людей на фотке перекошены, как будто их избивают. Как можно было поймать такой неудачный момент?!'
 ];
 
-const PHOTO_DESRIPTIONS = [
+const PHOTO_DESCRIPTIONS = [
   'Тестирую зеркалку',
   'Завалила немного горизонт',
   'Снимаю на старую «Нокию»',
@@ -73,9 +73,9 @@ const generateComments = () => {
     commentsQuantityMax = MESSAGES.length;
   }
 
-  const commentsQuantity = getUnicRandomInteger(1, commentsQuantityMax);
+  const commentsQuantity = getRandomInteger(1, commentsQuantityMax);
 
-  for (let i = 0; i < commentsQuantity(); i++) {
+  for (let i = 0; i < commentsQuantity; i++) {
     comments.push(createComment(avatarNumber(), commentMessageKey()));
   }
 
@@ -84,12 +84,12 @@ const generateComments = () => {
 
 const generatePhotoObject = () => {
   const photoId = generatePhotoId();
-  const photoDescriptionKey = getUnicRandomInteger(0, PHOTO_DESRIPTIONS.length - 1);
+  const photoDescriptionKey = getUnicRandomInteger(0, PHOTO_DESCRIPTIONS.length - 1);
 
   return {
     id: photoId,
     url: `photos/${photoId}.jpg`,
-    description: PHOTO_DESRIPTIONS[photoDescriptionKey()],
+    description: PHOTO_DESCRIPTIONS[photoDescriptionKey()],
     likes: getRandomInteger(LIKES_MIN_VALUE, LIKES_MAX_VALUE),
     comments: generateComments()
   };
@@ -97,4 +97,4 @@ const generatePhotoObject = () => {
 
 const generatePhotos = Array.from({ length: PHOTOS_MAX_COUNT }, generatePhotoObject);
 
-export { generatePhotos };
+export {generatePhotos };
