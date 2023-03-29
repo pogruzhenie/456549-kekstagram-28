@@ -94,6 +94,6 @@ const generatePhotoObject = () => {
   };
 };
 
-const generatePhotos = () => Array.from({ length: PHOTOS_MAX_COUNT }, generatePhotoObject);
+const generatePhotos = (count = PHOTOS_MAX_COUNT) => Array.from({ length: count }, generatePhotoObject);
 
 export { generatePhotos };
