@@ -1,5 +1,9 @@
-//import { generatePhotos } from './data.js';
-//import { addPictures } from './pictures.js';
-import { gallery } from './gallery.js';
+import { generatePhotos } from './data.js';
+import { addPictures } from './thumbnails.js';
+import { showDetail } from './detail.js';
 
-gallery();
+const randomPhotos = generatePhotos();
+addPictures(randomPhotos);
+showDetail(randomPhotos);
+
+//export { gallery };
