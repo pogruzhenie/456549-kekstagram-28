@@ -14,6 +14,8 @@ const gallery = () => {
   const likesCount = photoDetail.querySelector('.likes-count');
   const commentsCount = photoDetail.querySelector('.comments-count');
   const photoCaption = photoDetail.querySelector('.social__caption');
+  const photoDefaultComment = photoDetail.querySelector('.social__comment');
+  const photoCommentsBlock = photoDetail.querySelector('.social__comments');
 
   console.log('gallery module connected');
   console.log(picturesContainer);
@@ -41,8 +43,26 @@ const gallery = () => {
     photoCaption.textContent = photoObject.description;
 
     photoComments.forEach((comment) => {
+      const photoComment = photoDefaultComment.cloneNode(true);
+      const commentAutor = photoComment.querySelector('.social__picture');
+      const photoCommentText = photoComment.querySelector('.social__text');
+
+      commentAutor.alt = comment.name;
+      commentAutor.src = comment.avatar;
+      photoComment.querySelector('.social__text').textContent = comment.message;
+
+      commentsListFragment.append(photoComment);
+
       console.log(comment);
+      console.log(photoComment);
+      console.log(commentAutor);
+      console.log(photoCommentText);
+      console.log();
     });
+    console.log(commentsListFragment);
+    console.log('//////////////////');
+    photoCommentsBlock.textContent = '';
+    photoCommentsBlock.append(commentsListFragment);
 
     console.log(evt);
     console.log(evt.target);
