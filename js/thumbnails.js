@@ -10,7 +10,7 @@ const addPictures = (picturesData) => {
     const pictureImg = picture.querySelector('.picture__img');
     pictureImg.src = pictureObject.url;
     pictureImg.alt = pictureObject.description;
-    pictureImg.dataset.id = pictureObject.id;
+    pictureImg.dataset.id = pictureObject.id - 1;
     picture.querySelector('.picture__likes').textContent = pictureObject.likes;
     picture.querySelector('.picture__comments').textContent = pictureObject.comments.length;
     picturesListFragment.append(picture);
