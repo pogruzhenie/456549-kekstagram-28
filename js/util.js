@@ -7,12 +7,13 @@ const getRandomInteger = (min, max) => {
 };
 
 const getUnicRandomInteger = (min, max) => {
-  const previousValues = [];
+  let previousValues = [];
 
   return function () {
     let currentValue = getRandomInteger(min, max);
     if (previousValues.length >= (max - min + 1)) {
-      return null;
+     previousValues = [];
+      //return null;
     }
     while (previousValues.includes(currentValue)) {
       currentValue = getRandomInteger(min, max);

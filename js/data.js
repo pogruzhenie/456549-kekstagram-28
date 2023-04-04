@@ -1,6 +1,6 @@
 import { getRandomInteger, getRandomArrayElement, createIdGenerator, getUnicRandomInteger } from './util.js';
 
-const COMMENTS_MAX_COUNT = 6;
+const COMMENTS_MAX_COUNT = 26;
 const AVATARS_COUNT = 6;
 const PHOTOS_MAX_COUNT = 25;
 const LIKES_MIN_VALUE = 15;
@@ -22,8 +22,7 @@ const PHOTO_DESCRIPTIONS = [
   'Рядом с моим домом',
   'В этом снимке заложен глубокий философский смысл, недоступный большинству посетителей',
   'Сгенерировано нейросетью',
-  'На что способны эти современные графические редакторы',
-  'Стоим такие падике с пацанами, а тут такое'
+  'На что способны эти современные графические редакторы'
 ];
 
 const NAMES = [
@@ -68,17 +67,19 @@ const createComment = (avatarNumber, commentMessageKey) => {
 
 const generateComments = () => {
   const comments = [];
-  const avatarNumber = getUnicRandomInteger(1, AVATARS_COUNT);
-  const commentMessageKey = getUnicRandomInteger(0, MESSAGES.length - 1);
+  const avatarNumber = getUnicRandomInteger(1, AVATARS_COUNT);//getUnicRandomInteger
+  const commentMessageKey = getUnicRandomInteger(0, MESSAGES.length - 1);//getUnicRandomInteger
   let commentsQuantityMax = COMMENTS_MAX_COUNT;
 
-  if (MESSAGES.length < COMMENTS_MAX_COUNT) {
-    commentsQuantityMax = MESSAGES.length;
-  }
-
+  //if (MESSAGES.length < COMMENTS_MAX_COUNT) {
+   // commentsQuantityMax = MESSAGES.length;
+  //}
+ // console.log(commentMessageKey());
   const commentsQuantity = getRandomInteger(1, commentsQuantityMax);
 
   for (let i = 0; i < commentsQuantity; i++) {
+    //const avatarNumber = getRandomInteger(1, AVATARS_COUNT);//getUnicRandomInteger
+    //const commentMessageKey = getRandomInteger(0, MESSAGES.length - 1);//getUnicRandomInteger
     comments.push(createComment(avatarNumber(), commentMessageKey()));
   }
 
