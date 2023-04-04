@@ -2,22 +2,63 @@ import { isEscapeKey } from './util.js';
 
 const showDetail = (photosArray) => {
 
-  document.querySelector('.social__comment-count').classList.add('hidden');
-  document.querySelector('.comments-loader').classList.add('hidden');
+  const NO_COMMENTS_MESSAGE = 'Эту фотографию пока никто не комментировал';
+  const COMMENTS_LOAD_COUNT = 5;
 
   const picturesContainer = document.querySelector('.pictures');
   const photoDetail = document.querySelector('.big-picture');
   const closeButton = photoDetail.querySelector('.big-picture__cancel');
   const photoImg = photoDetail.querySelector('.big-picture__img').querySelector('img');
   const likesCount = photoDetail.querySelector('.likes-count');
-  const commentsCount = photoDetail.querySelector('.comments-count');
   const photoCaption = photoDetail.querySelector('.social__caption');
   const photoDefaultComment = photoDetail.querySelector('.social__comment');
-  const photoCommentsBlock = photoDetail.querySelector('.social__comments');
+
+  const commentsBlock = photoDetail.querySelector('.social__comments');
+  const commentsLoader = photoDetail.querySelector('.comments-loader');
+  const commentsCountBlock = photoDetail.querySelector('.social__comment-count');
+  const commentsCountTemplate = commentsCountBlock.cloneNode(true);
 
   const renderComments = (commentsArray) => {
+    const commentsLenght = commentsArray.length;
+    let commentsFirstLoad = COMMENTS_LOAD_COUNT;
+
+    if (commentsLenght <= COMMENTS_LOAD_COUNT) {
+
+      commentsLoader.classList.add('hidden');
+      commentsFirstLoad = commentsLenght;
+      let commentsCountMessage = '';
+
+      switch (true) {
+        case (commentsLenght === 1):
+          commentsCountMessage = `${commentsLenght} комментарий`;
+          break;
+        case (commentsLenght > 1 && commentsLenght < 5):
+          commentsCountMessage = `${commentsLenght} комментария`;
+          break;
+        case (commentsLenght > 4):
+          commentsCountMessage = `${commentsLenght} комментариев`;
+          break;
+      }
+      commentsCountBlock.textContent = commentsCountMessage;
+    }
+
+    if (commentsLenght === 0) {
+      commentsCountBlock.textContent = NO_COMMENTS_MESSAGE;
+    }
+
+    if (commentsLenght >= COMMENTS_LOAD_COUNT) {
+      if (commentsLenght > COMMENTS_LOAD_COUNT) {
+        commentsLoader.classList.remove('hidden');
+      }
+      commentsCountTemplate.querySelector('.comments-count').textContent = commentsLenght;
+      commentsCountTemplate.querySelector('.comments-loaded-count').textContent = COMMENTS_LOAD_COUNT;
+      commentsCountBlock.textContent = commentsCountTemplate.textContent;
+    }
+
     const commentsListFragment = document.createDocumentFragment();
-    commentsArray.forEach((comment) => {
+
+    for (let i = 0; i < commentsFirstLoad; i++){
+      const comment = commentsArray[i];
       const photoComment = photoDefaultComment.cloneNode(true);
       const commentAutor = photoComment.querySelector('.social__picture');
 
@@ -26,10 +67,10 @@ const showDetail = (photosArray) => {
       photoComment.querySelector('.social__text').textContent = comment.message;
 
       commentsListFragment.append(photoComment);
-    });
+    }
 
-    photoCommentsBlock.textContent = '';
-    photoCommentsBlock.append(commentsListFragment);
+    commentsBlock.textContent = '';
+    commentsBlock.append(commentsListFragment);
   };
 
   const renderPhotoDetail = (photoObject) => {
@@ -38,7 +79,6 @@ const showDetail = (photosArray) => {
     photoImg.src = photoObject.url;
     photoImg.alt = photoObject.description;
     likesCount.textContent = photoObject.likes;
-    commentsCount.textContent = photoComments.length;
     photoCaption.textContent = photoObject.description;
 
     renderComments(photoComments);
@@ -75,6 +115,7 @@ const showDetail = (photosArray) => {
 
 
       const photoObject = photosArray[evt.target.dataset.id];
+      console.log(photoObject.comments);
       renderPhotoDetail(photoObject);
     }
   };
