@@ -1,4 +1,4 @@
-import { isEscapeKey } from './util.js';
+import { openModal } from './popup.js';
 
 const showDetail = (photosArray) => {
 
@@ -18,14 +18,38 @@ const showDetail = (photosArray) => {
   const commentsCountBlock = photoDetail.querySelector('.social__comment-count');
   const commentsCountTemplate = commentsCountBlock.cloneNode(true);
 
+  const loadComments = (commentsArray, startIndex = 0, commentsLoadingCount = COMMENTS_LOAD_COUNT) => {
+
+    const commentsListFragment = document.createDocumentFragment();
+    if (commentsArray.length < COMMENTS_LOAD_COUNT) {
+      commentsLoadingCount = commentsArray.length;
+    }
+
+    for (let i = startIndex; i < commentsLoadingCount; i++){
+      const comment = commentsArray[i];
+      const photoComment = photoDefaultComment.cloneNode(true);
+      const commentAutor = photoComment.querySelector('.social__picture');
+
+      commentAutor.alt = comment.name;
+      commentAutor.src = comment.avatar;
+      photoComment.querySelector('.social__text').textContent = comment.message;
+
+      commentsListFragment.append(photoComment);
+    }
+
+    commentsBlock.textContent = '';
+    commentsBlock.append(commentsListFragment);
+
+  };
+
   const renderComments = (commentsArray) => {
     const commentsLenght = commentsArray.length;
-    let commentsFirstLoad = COMMENTS_LOAD_COUNT;
+    //let commentsFirstLoad = COMMENTS_LOAD_COUNT;
 
     if (commentsLenght <= COMMENTS_LOAD_COUNT) {
 
       commentsLoader.classList.add('hidden');
-      commentsFirstLoad = commentsLenght;
+      //commentsFirstLoad = commentsLenght;
       let commentsCountMessage = '';
 
       switch (true) {
@@ -54,23 +78,7 @@ const showDetail = (photosArray) => {
       commentsCountTemplate.querySelector('.comments-loaded-count').textContent = COMMENTS_LOAD_COUNT;
       commentsCountBlock.textContent = commentsCountTemplate.textContent;
     }
-
-    const commentsListFragment = document.createDocumentFragment();
-
-    for (let i = 0; i < commentsFirstLoad; i++){
-      const comment = commentsArray[i];
-      const photoComment = photoDefaultComment.cloneNode(true);
-      const commentAutor = photoComment.querySelector('.social__picture');
-
-      commentAutor.alt = comment.name;
-      commentAutor.src = comment.avatar;
-      photoComment.querySelector('.social__text').textContent = comment.message;
-
-      commentsListFragment.append(photoComment);
-    }
-
-    commentsBlock.textContent = '';
-    commentsBlock.append(commentsListFragment);
+    loadComments(commentsArray);
   };
 
   const renderPhotoDetail = (photoObject) => {
@@ -83,37 +91,13 @@ const showDetail = (photosArray) => {
 
     renderComments(photoComments);
   };
-  const onCloseModal = () => {
-    photoDetail.classList.add('hidden');
-    document.body.classList.remove('modal-open');
-  };
-
-  const onDocumentKeydown = (evt) => {
-    if (isEscapeKey(evt)) {
-      evt.preventDefault();
-      document.removeEventListener('keydown', onDocumentKeydown);
-      onCloseModal();
-    }
-  };
-
-  const closeModal = (evt) => {
-    evt.preventDefault();
-    onCloseModal();
-    document.removeEventListener('keydown', onDocumentKeydown);
-  };
 
   const onPictureClick = (evt) => {
     evt.preventDefault();
 
     if (evt.target.tagName === 'IMG') {
 
-      photoDetail.classList.remove('hidden');
-      document.body.classList.add('modal-open');
-
-      closeButton.addEventListener('click', closeModal);
-      document.addEventListener('keydown', onDocumentKeydown);
-
-
+      openModal(photoDetail, closeButton);
       const photoObject = photosArray[evt.target.dataset.id];
       console.log(photoObject.comments);
       renderPhotoDetail(photoObject);
