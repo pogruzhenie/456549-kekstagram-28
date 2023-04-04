@@ -1,6 +1,11 @@
 import { isEscapeKey } from './util.js';
 
-const onCloseModal = (popup) => {
+const popup = document.querySelector('.big-picture');
+const closeButton = popup.querySelector('.big-picture__cancel');
+
+let closeModal = {};
+
+const onCloseModal = () => {
   popup.classList.add('hidden');
   document.body.classList.remove('modal-open');
 };
@@ -9,17 +14,19 @@ const onDocumentKeydown = (evt) => {
   if (isEscapeKey(evt)) {
     evt.preventDefault();
     document.removeEventListener('keydown', onDocumentKeydown);
+    closeButton.removeEventListener('click', closeModal);
     onCloseModal();
   }
 };
 
-const closeModal = (evt) => {
+closeModal = (evt) => {
   evt.preventDefault();
-  onCloseModal();
   document.removeEventListener('keydown', onDocumentKeydown);
+  closeButton.removeEventListener('click', closeModal);
+  onCloseModal();
 };
 
-const openModal = (popup, closeButton) => {
+const openModal = () => {
   popup.classList.remove('hidden');
   document.body.classList.add('modal-open');
   closeButton.addEventListener('click', closeModal);

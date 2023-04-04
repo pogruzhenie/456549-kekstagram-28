@@ -7,16 +7,25 @@ const showDetail = (photosArray) => {
 
   const picturesContainer = document.querySelector('.pictures');
   const photoDetail = document.querySelector('.big-picture');
-  const closeButton = photoDetail.querySelector('.big-picture__cancel');
   const photoImg = photoDetail.querySelector('.big-picture__img').querySelector('img');
   const likesCount = photoDetail.querySelector('.likes-count');
   const photoCaption = photoDetail.querySelector('.social__caption');
-  const photoDefaultComment = photoDetail.querySelector('.social__comment');
 
+  const photoDefaultComment = photoDetail.querySelector('.social__comment');
   const commentsBlock = photoDetail.querySelector('.social__comments');
   const commentsLoader = photoDetail.querySelector('.comments-loader');
   const commentsCountBlock = photoDetail.querySelector('.social__comment-count');
   const commentsCountTemplate = commentsCountBlock.cloneNode(true);
+
+  const onCommentsLoad = (evt) => {
+    if(!evt.target.disabled){
+      evt.preventDefault();
+      console.log(evt.target);
+      const loadButton = evt.target;
+      loadButton.disabled = true;
+
+    }
+  };
 
   const loadComments = (commentsArray, startIndex = 0, commentsLoadingCount = COMMENTS_LOAD_COUNT) => {
 
@@ -73,6 +82,7 @@ const showDetail = (photosArray) => {
     if (commentsLenght >= COMMENTS_LOAD_COUNT) {
       if (commentsLenght > COMMENTS_LOAD_COUNT) {
         commentsLoader.classList.remove('hidden');
+        commentsLoader.addEventListener('click', onCommentsLoad);
       }
       commentsCountTemplate.querySelector('.comments-count').textContent = commentsLenght;
       commentsCountTemplate.querySelector('.comments-loaded-count').textContent = COMMENTS_LOAD_COUNT;
@@ -97,14 +107,16 @@ const showDetail = (photosArray) => {
 
     if (evt.target.tagName === 'IMG') {
 
-      openModal(photoDetail, closeButton);
+      openModal();
       const photoObject = photosArray[evt.target.dataset.id];
       console.log(photoObject.comments);
       renderPhotoDetail(photoObject);
     }
   };
 
+
   picturesContainer.addEventListener('click', onPictureClick);
+
 };
 
 export { showDetail };
