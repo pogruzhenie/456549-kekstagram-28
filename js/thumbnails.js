@@ -7,7 +7,10 @@ const addPictures = (picturesData) => {
 
   picturesData.forEach((pictureObject) => {
     const picture = pictureTemplate.cloneNode(true);
-    picture.querySelector('.picture__img').src = pictureObject.url;
+    const pictureImg = picture.querySelector('.picture__img');
+    pictureImg.src = pictureObject.url;
+    pictureImg.alt = pictureObject.description;
+    pictureImg.dataset.id = pictureObject.id - 1;
     picture.querySelector('.picture__likes').textContent = pictureObject.likes;
     picture.querySelector('.picture__comments').textContent = pictureObject.comments.length;
     picturesListFragment.append(picture);
