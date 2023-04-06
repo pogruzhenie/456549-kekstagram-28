@@ -8,6 +8,8 @@ const showDetail = (photosArray) => {
   const photoImg = photoDetail.querySelector('.big-picture__img').querySelector('img');
   const likesCount = photoDetail.querySelector('.likes-count');
   const photoCaption = photoDetail.querySelector('.social__caption');
+  const commentsCountBlock = photoDetail.querySelector('.social__comment-count');
+  const commentsCountTemplate = commentsCountBlock.cloneNode(true);
 
   const renderPhotoDetail = (photoObject) => {
     const photoComments = photoObject.comments;
@@ -17,7 +19,7 @@ const showDetail = (photosArray) => {
     likesCount.textContent = photoObject.likes;
     photoCaption.textContent = photoObject.description;
 
-    getComments(photoDetail, photoComments);
+    getComments(photoDetail, commentsCountTemplate, photoComments);
   };
 
   const onPictureClick = (evt) => {
@@ -27,7 +29,6 @@ const showDetail = (photosArray) => {
 
       openModal();
       const photoObject = photosArray[evt.target.dataset.id];
-      console.log(photoObject.comments);
       renderPhotoDetail(photoObject);
     }
   };

@@ -69,12 +69,7 @@ const generateComments = () => {
   const comments = [];
   const avatarNumber = getUnicRandomInteger(1, AVATARS_COUNT);//getUnicRandomInteger
   const commentMessageKey = getUnicRandomInteger(0, MESSAGES.length - 1);//getUnicRandomInteger
-  let commentsQuantityMax = COMMENTS_MAX_COUNT;
-
-  //if (MESSAGES.length < COMMENTS_MAX_COUNT) {
-   // commentsQuantityMax = MESSAGES.length;
-  //}
- // console.log(commentMessageKey());
+  const commentsQuantityMax = COMMENTS_MAX_COUNT;
   const commentsQuantity = getRandomInteger(1, commentsQuantityMax);
 
   for (let i = 0; i < commentsQuantity; i++) {

@@ -1,65 +1,27 @@
 const NO_COMMENTS_MESSAGE = 'Эту фотографию пока никто не комментировал';
 const COMMENTS_LOAD_COUNT = 5;
 
-const getComments = (commentedBlock, commentsArray) => {
+const getComments = (commentedBlock, commentsCounter, commentsArray) => {
 
   const photoDefaultComment = commentedBlock.querySelector('.social__comment');
   const commentsBlock = commentedBlock.querySelector('.social__comments');
-  const commentsLoader = commentedBlock.querySelector('.comments-loader');
+  const moreCommentsButton = commentedBlock.querySelector('.comments-loader');
   const commentsCountBlock = commentedBlock.querySelector('.social__comment-count');
-  const commentsCountTemplate = commentsCountBlock.cloneNode(true);
 
-  console.log('comments array in comments module');
-  console.log(commentsArray);
-
-  const onCommentsLoad = (evt) => {
-    if(!evt.target.disabled){
-      evt.preventDefault();
-      console.log(evt.target);
-      const loadButton = evt.target;
-      loadButton.disabled = true;
-    }
+  const refreshCommentsCounter = () => {
+    const loadedComments = commentedBlock.querySelectorAll('.social__comment');
+    commentsCounter.querySelector('.comments-count').textContent = commentsArray.length;
+    commentsCounter.querySelector('.comments-loaded-count').textContent = loadedComments.length;
+    commentsCountBlock.textContent = commentsCounter.textContent;
   };
 
-  const loadComments = (offset = 0, commentsLoadingCount = COMMENTS_LOAD_COUNT) => {
-    console.log('function to load comments was called');
-    const commentsListFragment = document.createDocumentFragment();
-
-    console.log(commentsArray.length);
-
-    if (commentsArray.length <= COMMENTS_LOAD_COUNT) {
-      commentsLoadingCount = commentsArray.length;
-
+  const displayCommentsCounterMessage = () => {
+    if (commentsArray.length === 0) {
+      commentsCountBlock.textContent = NO_COMMENTS_MESSAGE;
     }
-    console.log(commentsLoadingCount);
-    console.log(offset);
-    for (let i = offset; i < commentsLoadingCount; i++){
-      console.log(i);
-      const comment = commentsArray[i];
-      console.log(comment);
-      const photoComment = photoDefaultComment.cloneNode(true);
-      const commentAutor = photoComment.querySelector('.social__picture');
-
-      commentAutor.alt = comment.name;
-      commentAutor.src = comment.avatar;
-      photoComment.querySelector('.social__text').textContent = comment.message;
-
-      commentsListFragment.append(photoComment);
-    }
-
-    commentsBlock.textContent = '';
-    commentsBlock.append(commentsListFragment);
-
-  };
-
-  const renderComments = () => {
-//если комметариев к фотке меньше, чем выводится в блоке по умолчанию
     if (commentsArray.length < COMMENTS_LOAD_COUNT) {
-
-      commentsLoader.classList.add('hidden');//скрываем кнопку загрузки
-      let commentsCountMessage = '';//создаём переменную для сообщения
-
-      switch (true) {//выбираем грамотное окончание, в зависимости, от количества комментариев
+      let commentsCountMessage = '';
+      switch (true) {
         case (commentsArray.length === 1):
           commentsCountMessage = `${commentsArray.length} комментарий`;
           break;
@@ -70,26 +32,66 @@ const getComments = (commentedBlock, commentsArray) => {
           commentsCountMessage = `${commentsArray.length} комментариев`;
           break;
       }
-      commentsCountBlock.textContent = commentsCountMessage;//выводим сообщение
+      commentsCountBlock.textContent = commentsCountMessage;
+    } else {
+      refreshCommentsCounter();
     }
-
-    if (commentsArray.length === 0) {
-      commentsCountBlock.textContent = NO_COMMENTS_MESSAGE;
-    }
-
-    if (commentsArray.length >= COMMENTS_LOAD_COUNT) {
-      if (commentsArray.length > COMMENTS_LOAD_COUNT) {
-        commentsLoader.classList.remove('hidden');
-        commentsLoader.addEventListener('click', onCommentsLoad);
-      }
-      commentsCountTemplate.querySelector('.comments-count').textContent = commentsArray.length;
-      commentsCountTemplate.querySelector('.comments-loaded-count').textContent = COMMENTS_LOAD_COUNT;
-      commentsCountBlock.textContent = commentsCountTemplate.textContent;
-    }
-    loadComments();
   };
 
-  renderComments();
+  const loadComments = (offset = 0, commentsLoadingCount = COMMENTS_LOAD_COUNT) => {
+    const commentsListFragment = document.createDocumentFragment();
+
+    if (commentsArray.length <= COMMENTS_LOAD_COUNT) {
+      commentsLoadingCount = commentsArray.length;
+    }
+
+    for (let i = offset; i < commentsLoadingCount; i++){
+      const comment = commentsArray[i];
+      const photoComment = photoDefaultComment.cloneNode(true);
+      const commentAutor = photoComment.querySelector('.social__picture');
+      commentAutor.alt = comment.name;
+      commentAutor.src = comment.avatar;
+      photoComment.querySelector('.social__text').textContent = comment.message;
+      commentsListFragment.append(photoComment);
+    }
+    commentsBlock.append(commentsListFragment);
+  };
+
+  const onCommentsLoad = (evt) => {
+    if (moreCommentsButton.disabled === false) {
+      evt.preventDefault();
+      const loadedCommentsCount = commentedBlock.querySelectorAll('.social__comment').length;
+      moreCommentsButton.disabled = true;
+      let currentEnd = commentsArray.length;
+      if (loadedCommentsCount + COMMENTS_LOAD_COUNT < commentsArray.length){
+        currentEnd = loadedCommentsCount + COMMENTS_LOAD_COUNT;
+        loadComments(loadedCommentsCount, currentEnd);
+        refreshCommentsCounter();
+        moreCommentsButton.disabled = false;
+      } else {
+        moreCommentsButton.classList.add('hidden');
+        loadComments(loadedCommentsCount, currentEnd);
+        refreshCommentsCounter();
+        moreCommentsButton.removeEventListener('click', onCommentsLoad);
+        moreCommentsButton.disabled = false;
+      }
+    }
+  };
+
+  commentsBlock.textContent = '';
+
+  if (commentsArray.length > 0) {
+    loadComments();
+    if (commentsArray.length > COMMENTS_LOAD_COUNT) {
+      refreshCommentsCounter();
+      moreCommentsButton.classList.remove('hidden');
+      moreCommentsButton.addEventListener('click', onCommentsLoad);
+    } else {
+      displayCommentsCounterMessage();
+    }
+  } else {
+    displayCommentsCounterMessage();
+  }
 };
 
 export { getComments };
