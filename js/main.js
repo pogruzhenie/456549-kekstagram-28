@@ -6,6 +6,3 @@ import { showDetail } from './detail.js';
 const randomPhotos = generatePhotos();
 addPictures(randomPhotos);
 showDetail(randomPhotos);
-//isEscapeKey();
-
-//export { gallery };
