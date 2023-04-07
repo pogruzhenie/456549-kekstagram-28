@@ -1,4 +1,4 @@
-import { openModal } from './popup.js';
+import { manageModal } from './popup.js';
 import { getComments } from './comments.js';
 
 const showDetail = (photosArray) => {
@@ -10,6 +10,8 @@ const showDetail = (photosArray) => {
   const photoCaption = photoDetail.querySelector('.social__caption');
   const commentsCountBlock = photoDetail.querySelector('.social__comment-count');
   const commentsCountTemplate = commentsCountBlock.cloneNode(true);
+  const popup = document.querySelector('.big-picture');
+  const closeButton = popup.querySelector('.big-picture__cancel');
 
   const renderPhotoDetail = (photoObject) => {
     const photoComments = photoObject.comments;
@@ -23,11 +25,11 @@ const showDetail = (photosArray) => {
   };
 
   const onPictureClick = (evt) => {
-    evt.preventDefault();
 
     if (evt.target.tagName === 'IMG') {
-
-      openModal();
+      evt.preventDefault();
+      //openModal();
+      manageModal(popup, closeButton);
       const photoObject = photosArray[evt.target.dataset.id];
       renderPhotoDetail(photoObject);
     }
