@@ -35,11 +35,8 @@ const manageModal = (popup, closeButton) => {
     document.addEventListener('keydown', onDocumentKeydown);
   };
 
-  //if (action === 'open') {
-
   openModal(popup, closeButton);
 
-  //}
+};
 
-}
 export { manageModal };
