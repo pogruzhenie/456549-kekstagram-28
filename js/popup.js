@@ -3,7 +3,7 @@ import { isEscapeKey } from './util.js';
 //const popup = document.querySelector('.big-picture');
 //const closeButton = popup.querySelector('.big-picture__cancel');
 
-const manageModal = (popup, closeButton) => {
+const manageModal = (popup, closeButton, sendedFunction) => {
 
   let closeModal = {};
 
@@ -36,6 +36,7 @@ const manageModal = (popup, closeButton) => {
   };
 
   openModal(popup, closeButton);
+  sendedFunction();
 
 };
 
