@@ -33,6 +33,10 @@ const createIdGenerator = () => {
   };
 };
 
+const clearFormFields = (form) => {
+  form.reset();
+};
+
 const isEscapeKey = (evt) => evt.keyCode === 27;
 
-export { getRandomInteger, getRandomArrayElement, createIdGenerator, getUnicRandomInteger, isEscapeKey };
+export { getRandomInteger, getRandomArrayElement, createIdGenerator, getUnicRandomInteger, isEscapeKey, clearFormFields };
