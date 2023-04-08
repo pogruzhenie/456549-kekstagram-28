@@ -1,4 +1,6 @@
 import { manageModal } from './popup.js';
+import { clearFormFields } from './util.js';
+
 console.log('form module connected');
 
 const photoUploadControl = document.querySelector('#upload-file');
@@ -12,7 +14,7 @@ const onPhotoUpload = (evt) => {
 
   //imgUploadOverlay.classList.remove('hidden');
   //document.body.classList('modal-open');
-  manageModal(imgUploadOverlay, closeButton);
+  manageModal(imgUploadOverlay, closeButton, clearFormFields);
   //closeButton
 };
 

@@ -3,13 +3,14 @@ import { isEscapeKey } from './util.js';
 //const popup = document.querySelector('.big-picture');
 //const closeButton = popup.querySelector('.big-picture__cancel');
 
-const manageModal = (popup, closeButton, sendedFunction) => {
+const manageModal = (popup, closeButton, onCloseFunction, onOpenFunction) => {
 
   let closeModal = {};
 
   const onCloseModal = () => {
     popup.classList.add('hidden');
     document.body.classList.remove('modal-open');
+    onCloseFunction();
   };
 
   const onDocumentKeydown = (evt) => {
@@ -33,10 +34,10 @@ const manageModal = (popup, closeButton, sendedFunction) => {
     document.body.classList.add('modal-open');
     closeButton.addEventListener('click', closeModal);
     document.addEventListener('keydown', onDocumentKeydown);
+    onOpenFunction();
   };
 
   openModal(popup, closeButton);
-  sendedFunction();
 
 };
 

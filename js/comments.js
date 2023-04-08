@@ -1,6 +1,9 @@
 const NO_COMMENTS_MESSAGE = 'Эту фотографию пока никто не комментировал';
 const COMMENTS_LOAD_COUNT = 5;
 
+//addEventListener("DOMContentLoaded", (event) => {});
+//onDOMContentLoaded = (event) => {};
+
 const getComments = (commentedBlock, commentsCounter, commentsArray) => {
 
   const photoDefaultComment = commentedBlock.querySelector('.social__comment');
