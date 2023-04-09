@@ -1,15 +1,15 @@
+import { isEscapeKey } from './util.js';
+
 const NO_COMMENTS_MESSAGE = 'Эту фотографию пока никто не комментировал';
 const COMMENTS_LOAD_COUNT = 5;
 
-//addEventListener("DOMContentLoaded", (event) => {});
-//onDOMContentLoaded = (event) => {};
-
-const getComments = (commentedBlock, commentsCounter, commentsArray) => {
+const getComments = (commentedBlock, commentsCounter, commentsCloseButton, commentsArray) => {
 
   const photoDefaultComment = commentedBlock.querySelector('.social__comment');
   const commentsBlock = commentedBlock.querySelector('.social__comments');
   const moreCommentsButton = commentedBlock.querySelector('.comments-loader');
   const commentsCountBlock = commentedBlock.querySelector('.social__comment-count');
+  //const commentsCloseButton = commentedBlock.querySelector();
 
   const refreshCommentsCounter = () => {
     const loadedComments = commentedBlock.querySelectorAll('.social__comment');
@@ -80,6 +80,24 @@ const getComments = (commentedBlock, commentsCounter, commentsArray) => {
       }
     }
   };
+
+  const closeComments = () => {
+    moreCommentsButton.removeEventListener('click', onCommentsLoad);
+    moreCommentsButton.classList.add('hidden');
+  };
+
+  commentsCloseButton.addEventListener('click', () => {
+    closeComments();
+  });
+
+  const onDocumentKeydown = (evt) => {
+    if (isEscapeKey(evt)) {
+      evt.preventDefault();
+      closeComments();
+    }
+  };
+
+  document.addEventListener('keydown', onDocumentKeydown);
 
   commentsBlock.textContent = '';
 

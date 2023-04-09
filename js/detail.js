@@ -12,6 +12,7 @@ const showDetail = (photosArray) => {
   const commentsCountTemplate = commentsCountBlock.cloneNode(true);
   const popup = document.querySelector('.big-picture');
   const closeButton = popup.querySelector('.big-picture__cancel');
+  const commentsCloseButton = closeButton;
 
   const renderPhotoDetail = (photoObject) => {
     const photoComments = photoObject.comments;
@@ -21,14 +22,13 @@ const showDetail = (photosArray) => {
     likesCount.textContent = photoObject.likes;
     photoCaption.textContent = photoObject.description;
 
-    getComments(photoDetail, commentsCountTemplate, photoComments);
+    getComments(photoDetail, commentsCountTemplate, commentsCloseButton, photoComments);
   };
 
   const onPictureClick = (evt) => {
 
     if (evt.target.tagName === 'IMG') {
       evt.preventDefault();
-      //openModal();
       manageModal(popup, closeButton);
       const photoObject = photosArray[evt.target.dataset.id];
       renderPhotoDetail(photoObject);
