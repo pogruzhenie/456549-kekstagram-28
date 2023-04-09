@@ -81,21 +81,23 @@ const getComments = (commentedBlock, commentsCounter, commentsCloseButton, comme
     }
   };
 
-  const closeComments = () => {
-    moreCommentsButton.removeEventListener('click', onCommentsLoad);
-    moreCommentsButton.classList.add('hidden');
-  };
-
-  commentsCloseButton.addEventListener('click', () => {
-    closeComments();
-  });
-
+  let closeComments = {};
   const onDocumentKeydown = (evt) => {
     if (isEscapeKey(evt)) {
       evt.preventDefault();
       closeComments();
     }
   };
+
+  closeComments = () => {
+    moreCommentsButton.removeEventListener('click', onCommentsLoad);
+    document.removeEventListener('keydown', onDocumentKeydown);
+    moreCommentsButton.classList.add('hidden');
+  };
+
+  commentsCloseButton.addEventListener('click', () => {
+    closeComments();
+  });
 
   document.addEventListener('keydown', onDocumentKeydown);
 

@@ -1,20 +1,20 @@
 import { isEscapeKey } from './util.js';
 
 
-const manageModal = (popup, closeButton, onCloseFunction) => {
-
+const manageModal = (popup, closeButton, callback) => {
   let closeModal = {};
 
   const onCloseModal = () => {
+
     popup.classList.add('hidden');
     document.body.classList.remove('modal-open');
-    if (onCloseFunction && onCloseFunction()) {
-      onCloseFunction();
+    if (callback instanceof Function) {
+      console.log('!')
+      callback();
     }
   };
 
   const onDocumentKeydown = (evt) => {
-
     if (isEscapeKey(evt)) {
       evt.preventDefault();
       document.removeEventListener('keydown', onDocumentKeydown);
@@ -28,6 +28,7 @@ const manageModal = (popup, closeButton, onCloseFunction) => {
     document.removeEventListener('keydown', onDocumentKeydown);
     closeButton.removeEventListener('click', closeModal);
     onCloseModal();
+
   };
 
   const openModal = () => {
@@ -39,7 +40,7 @@ const manageModal = (popup, closeButton, onCloseFunction) => {
 
   };
 
-  openModal(popup, closeButton, onCloseFunction);
+  openModal(popup, closeButton);
 
 };
 

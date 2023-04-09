@@ -27,7 +27,7 @@ const showDetail = (photosArray) => {
 
   const onPictureClick = (evt) => {
 
-    if (evt.target.tagName === 'IMG') {
+    if (evt.target.closest('[data-id]')) {
       evt.preventDefault();
       manageModal(popup, closeButton);
       const photoObject = photosArray[evt.target.dataset.id];
